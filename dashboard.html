@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .dashboard-container {
+            text-align: center;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="dashboard-container">
+    <h1>Welcome, <span id="user-name"></span></h1>
+    <button id="logout-btn">Logout</button>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCHMe9j4GySWJ8qHv_E5_IVqCt8zqPw590",
+    authDomain: "class1-b68a2.firebaseapp.com",
+    projectId: "class1-b68a2",
+    storageBucket: "class1-b68a2.appspot.com",
+    messagingSenderId: "877634601479",
+    appId: "1:877634601479:web:a2ec668fc260b536e3e0a2",
+    measurementId: "G-BYKDKD2WYR"
+  };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            document.getElementById('user-name').textContent = user.email;
+        } else {
+            window.location.href = 'login.html'; // Redirect to login if not authenticated
+        }
+    });
+
+    document.getElementById('logout-btn').addEventListener('click', async () => {
+        try {
+            await signOut(auth);
+            window.location.href = 'login.html'; // Redirect to login after logout
+        } catch (error) {
+            console.error('Error during logout:', error);
+        }
+    });
+</script>
+
+</body>
+</html>
